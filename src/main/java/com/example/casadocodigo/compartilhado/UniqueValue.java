@@ -1,17 +1,21 @@
-package com.example.casadocodigo.novoAutor;
+package com.example.casadocodigo.compartilhado;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = {UniqueEmailValidator.class})
+@Constraint(validatedBy = {UniqueValueValidator.class})
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface UniqueEmail {
-    String message() default "Endereço de e-mail já cadastrado em outro autor";
+public @interface UniqueValue {
+    String message() default "O parâmetro já existe no banco de dados";
 
     Class<?>[] groups() default {};
 
     Class<? extends Payload>[] payload() default {};
+
+    String fieldName();
+
+    Class<?> domainClass();
 }

@@ -1,10 +1,14 @@
 package com.example.casadocodigo.novaCategoria;
 
+import com.example.casadocodigo.compartilhado.UniqueValue;
+import com.example.casadocodigo.novoAutor.Autor;
+
 import javax.validation.constraints.NotBlank;
 
 public class FormCategoriaRequest {
     @NotBlank
-    @UniqueCategoria
+    @UniqueValue
+            (domainClass = Categoria.class, fieldName = "nome")
     private String nome;
 
     public String getNome() {

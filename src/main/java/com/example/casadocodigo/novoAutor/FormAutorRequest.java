@@ -1,5 +1,7 @@
 package com.example.casadocodigo.novoAutor;
 
+import com.example.casadocodigo.compartilhado.UniqueValue;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -9,7 +11,8 @@ public class FormAutorRequest {
     private String nome;
     @NotBlank
     @Email
-    @UniqueEmail
+    @UniqueValue
+            (domainClass = Autor.class, fieldName = "email")
     private String email;
     @NotBlank
     @Size(max = 400)
