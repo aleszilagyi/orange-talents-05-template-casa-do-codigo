@@ -1,4 +1,4 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.novoAutor;
 
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,7 +12,7 @@ import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-public class AutorEntidade {
+public class Autor {
 
     private @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id;
     private @NotBlank String nome;
@@ -21,10 +21,10 @@ public class AutorEntidade {
     private @CreationTimestamp LocalDateTime momentoCriacao;
 
     @Deprecated
-    public AutorEntidade() {
+    public Autor() {
     }
 
-    public AutorEntidade(String nome, String email, String descricao) {
+    public Autor(String nome, String email, String descricao) {
         this.nome = nome;
         this.email = email;
         this.descricao = descricao;

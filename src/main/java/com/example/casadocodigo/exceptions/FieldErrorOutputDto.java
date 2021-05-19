@@ -1,4 +1,4 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.exceptions;
 
 public class FieldErrorOutputDto {
 

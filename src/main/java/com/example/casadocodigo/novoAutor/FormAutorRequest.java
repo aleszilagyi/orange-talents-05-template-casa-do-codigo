@@ -1,24 +1,23 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.novoAutor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-public class FormDto {
-
+public class FormAutorRequest {
+    @NotBlank
     private String nome;
+    @NotBlank
+    @Email
+    @UniqueEmail
     private String email;
+    @NotBlank
+    @Size(max = 400)
     private String descricao;
 
-    public void setNome(String nome) {
+    public FormAutorRequest(String nome, String email, String descricao) {
         this.nome = nome;
-    }
-
-    public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setDescricao(String descricao) {
         this.descricao = descricao;
     }
 
@@ -34,7 +33,7 @@ public class FormDto {
         return descricao;
     }
 
-    public AutorEntidade converter() {
-        return new AutorEntidade(nome, email, descricao);
+    public Autor converter() {
+        return new Autor(nome, email, descricao);
     }
 }

@@ -1,4 +1,4 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.exceptions;
 
 import java.util.ArrayList;
 import java.util.List;

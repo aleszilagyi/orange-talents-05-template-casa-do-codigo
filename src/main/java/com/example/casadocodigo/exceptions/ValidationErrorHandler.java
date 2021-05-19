@@ -1,4 +1,4 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.exceptions;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

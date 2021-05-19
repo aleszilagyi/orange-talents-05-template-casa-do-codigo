@@ -1,11 +1,11 @@
-package com.example.casadocodigo.autor;
+package com.example.casadocodigo.novoAutor;
 
 public class AutorDto {
     private Long id;
     private String nome;
     private String descricao;
 
-    public AutorDto(AutorEntidade autor) {
+    public AutorDto(Autor autor) {
         this.id = autor.getId();
         this.nome = autor.getNome();
         this.descricao = autor.getDescricao();
