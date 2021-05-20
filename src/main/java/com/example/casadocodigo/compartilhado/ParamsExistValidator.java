@@ -1,5 +1,6 @@
 package com.example.casadocodigo.compartilhado;
 
+import org.springframework.data.domain.Page;
 import org.springframework.util.Assert;
 
 import javax.persistence.EntityManager;
@@ -9,7 +10,7 @@ import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.List;
 
-public class ParamExistsInListValidator implements ConstraintValidator<ParamsExist, Object> {
+public class ParamsExistValidator implements ConstraintValidator<ParamsExist, Object> {
     private String domainAttribute;
     private Class<?> aClass;
     @PersistenceContext

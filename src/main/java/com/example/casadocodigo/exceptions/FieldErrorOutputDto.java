@@ -5,7 +5,8 @@ public class FieldErrorOutputDto {
     private String field;
     private String message;
 
-    public FieldErrorOutputDto() { }
+    public FieldErrorOutputDto() {
+    }
 
     public FieldErrorOutputDto(String field, String message) {
         this.field = field;

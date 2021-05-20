@@ -15,8 +15,10 @@ public class Livro {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @NotBlank
+    @Column(unique = true)
     @Size(max = 500)
     private String titulo;
+    @Lob
     @NotBlank
     private String sumario;
     @NotNull

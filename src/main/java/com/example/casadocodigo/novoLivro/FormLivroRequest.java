@@ -3,18 +3,18 @@ package com.example.casadocodigo.novoLivro;
 import com.example.casadocodigo.compartilhado.ParamsExist;
 import com.example.casadocodigo.compartilhado.UniqueValue;
 import com.example.casadocodigo.novaCategoria.Categoria;
+import com.example.casadocodigo.novaCategoria.CategoriaRepository;
 import com.example.casadocodigo.novoAutor.Autor;
+import com.example.casadocodigo.novoAutor.AutorRepository;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import javax.persistence.EntityManager;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.Query;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FormLivroRequest {
     @NotBlank
@@ -38,13 +38,13 @@ public class FormLivroRequest {
     private LocalDate dataPublicacao;
     @NotNull
     @ManyToOne
-    @ParamsExist(domainClass = Categoria.class, fieldName = "nome")
-    private String categoria;
+    @ParamsExist(domainClass = Categoria.class, fieldName = "id")
+    private Long categoria;
     @ManyToMany
-    private List<@NotBlank @ParamsExist(domainClass = Autor.class, fieldName = "nome")
-            String> autores;
+    private List<@NotNull @ParamsExist(domainClass = Autor.class, fieldName = "id")
+            Long> autores;
 
-    public FormLivroRequest(String titulo, String sumario, BigDecimal preco, int numPaginas, String isbn, String categoria) {
+    public FormLivroRequest(String titulo, String sumario, BigDecimal preco, int numPaginas, String isbn, Long categoria) {
         this.titulo = titulo;
         this.sumario = sumario;
         this.preco = preco;
@@ -58,28 +58,20 @@ public class FormLivroRequest {
         this.dataPublicacao = dataPublicacao;
     }
 
-    //Manter este getter para eitar bug na validaçao
-    public List<String> getAutores() {
+    //Manter este getter para evitar bug na validaçao
+    public List<Long> getAutores() {
         return autores;
     }
 
-    // Mais um bug
-    public void setAutores(List<String> autores) {
+    // Mais um bug, manter para evitar erro na validação dos autores
+    public void setAutores(List<Long> autores) {
         this.autores = autores;
     }
 
-    public Livro converter(EntityManager manager) {
-        Query queryCategoria = manager.createQuery("select c from Categoria c where c.nome = :categoria");
-        queryCategoria.setParameter("categoria", categoria);
-        List<Categoria> lista = (List<Categoria>) queryCategoria.getResultList();
-        Categoria categoriaListada = lista.get(0);
+    public Livro converter(CategoriaRepository categoriaRepository, AutorRepository autorRepository) {
+        Categoria categoriaListada = (Categoria) categoriaRepository.findById(categoria).get();
 
-        List<Autor> listaAutores = new ArrayList<>();
-        for (String autor : autores) {
-            Query queryAutor = manager.createQuery("select a from Autor a where a.nome = :autor");
-            queryAutor.setParameter("autor", autor);
-            listaAutores.addAll(queryAutor.getResultList());
-        }
+        List<Autor> listaAutores = autores.stream().map(autor -> (Autor) autorRepository.findById(autor).get()).collect(Collectors.toList());
 
         return new Livro(titulo, sumario, preco, numPaginas, isbn, dataPublicacao, categoriaListada, listaAutores);
     }
