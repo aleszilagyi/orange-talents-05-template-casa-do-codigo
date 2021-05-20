@@ -1,6 +1,6 @@
 package com.example.casadocodigo.novoLivro;
 
-import com.example.casadocodigo.compartilhado.ParamsExist;
+import com.example.casadocodigo.compartilhado.ValueExists;
 import com.example.casadocodigo.compartilhado.UniqueValue;
 import com.example.casadocodigo.novaCategoria.Categoria;
 import com.example.casadocodigo.novaCategoria.CategoriaRepository;
@@ -38,10 +38,10 @@ public class FormLivroRequest {
     private LocalDate dataPublicacao;
     @NotNull
     @ManyToOne
-    @ParamsExist(domainClass = Categoria.class, fieldName = "id")
+    @ValueExists(domainClass = Categoria.class, fieldName = "id")
     private Long categoria;
     @ManyToMany
-    private List<@NotNull @ParamsExist(domainClass = Autor.class, fieldName = "id")
+    private List<@NotNull @ValueExists(domainClass = Autor.class, fieldName = "id")
             Long> autores;
 
     public FormLivroRequest(String titulo, String sumario, BigDecimal preco, int numPaginas, String isbn, Long categoria) {

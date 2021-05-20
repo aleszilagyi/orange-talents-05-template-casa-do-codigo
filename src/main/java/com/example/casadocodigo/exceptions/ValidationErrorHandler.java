@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestControllerAdvice
@@ -19,10 +20,24 @@ public class ValidationErrorHandler {
     @Autowired
     private MessageSource messageSource;
 
+    //Erro de parser que acontece sempre que um formato de data inválido é retornado
+    //Este tipo de erro não tem caído no MethodArgumentNotValidException porque retorna antes
+    //um erro de Deserialization do Jackson
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(DateTimeParseException.class)
+    public ValidationErrorOutputDto handleDateTimeParseError(DateTimeParseException exception) {
+        String message = exception.getLocalizedMessage();
+
+        ValidationErrorOutputDto validationErrors = new ValidationErrorOutputDto();
+
+        validationErrors.addFormatErrorMessages(message);
+
+        return validationErrors;
+    }
+
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ValidationErrorOutputDto handleValidationError(MethodArgumentNotValidException exception) {
-
         List<ObjectError> globalErrors = exception.getBindingResult().getGlobalErrors();
         List<FieldError> fieldErrors = exception.getBindingResult().getFieldErrors();
 

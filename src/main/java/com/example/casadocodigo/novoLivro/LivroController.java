@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/livros")
@@ -35,8 +36,17 @@ public class LivroController {
 
     @GetMapping
     public Page<LivroDto> listarTodos(@PageableDefault(sort = "titulo", direction = Sort.Direction.DESC, page = 0, size = 10) Pageable paginacao) {
-            Page<Livro> livros = livroRepository.findAll(paginacao);
-            return LivroDto.converter(livros);
+        Page<Livro> livros = livroRepository.findAll(paginacao);
+        return LivroDto.converter(livros);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<LivroDetalhesDto> detalhar(@PathVariable Long id) {
+        Optional<Livro> livro = livroRepository.findById(id);
+        if(livro.isPresent()){
+            return ResponseEntity.ok(new LivroDetalhesDto(livro.get()));
+        }
+        return ResponseEntity.notFound().build();
     }
 
 }
