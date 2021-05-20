@@ -1,7 +1,7 @@
 package com.example.casadocodigo.novaCategoria;
 
 public class CategoriaDto {
-    private String nome;
+    private final String nome;
 
     public CategoriaDto(Categoria categoria) {
         this.nome = categoria.getNome();

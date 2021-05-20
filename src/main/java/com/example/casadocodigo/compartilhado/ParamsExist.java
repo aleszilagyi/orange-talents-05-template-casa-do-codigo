@@ -4,12 +4,12 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 import java.lang.annotation.*;
 
-@Constraint(validatedBy = {UniqueValueValidator.class})
-@Target(ElementType.FIELD)
+@Constraint(validatedBy = {ParamExistsInListValidator.class})
+@Target({ElementType.FIELD, ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface UniqueValue {
-    String message() default "{fieldName} fornecido já está cadastrado para ${domainClass.getSimpleName()}";
+public @interface ParamsExist {
+    String message() default "{fieldName} fornecido não está cadastrado como ${domainClass.getSimpleName()}";
 
     Class<?>[] groups() default {};
 

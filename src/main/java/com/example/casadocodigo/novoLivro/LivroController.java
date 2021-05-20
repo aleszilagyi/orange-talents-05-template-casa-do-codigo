@@ -1,4 +1,4 @@
-package com.example.casadocodigo.novaCategoria;
+package com.example.casadocodigo.novoLivro;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,21 +12,17 @@ import javax.transaction.Transactional;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/categorias")
-public class CategoriaController {
-
+@RequestMapping("/livros")
+public class LivroController {
     @PersistenceContext
     private EntityManager manager;
 
     @PostMapping
     @Transactional
-    public ResponseEntity<CategoriaDto> cadastrar(@RequestBody @Valid FormCategoriaRequest request) {
+    public ResponseEntity<LivroDto> cadastrar(@RequestBody @Valid FormLivroRequest request) {
+        Livro livro = request.converter(manager);
+        manager.persist(livro);
 
-        Categoria novaCategoria = request.converter();
-        manager.persist(novaCategoria);
-
-        return ResponseEntity.ok(new CategoriaDto(novaCategoria));
-
+        return ResponseEntity.ok(new LivroDto(livro));
     }
-
 }

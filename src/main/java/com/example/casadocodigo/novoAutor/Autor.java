@@ -13,16 +13,19 @@ import java.time.LocalDateTime;
 
 @Entity
 public class Autor {
-
-    private @Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-    private @NotBlank String nome;
-    private @NotBlank @Email
-    String email;
-    private @NotBlank @Size(max = 400) String descricao;
-    private @CreationTimestamp
-    LocalDateTime momentoCriacao;
+    private Long id;
+    @NotBlank
+    private String nome;
+    @NotBlank
+    @Email
+    private String email;
+    @NotBlank
+    @Size(max = 400)
+    private String descricao;
+    @CreationTimestamp
+    private LocalDateTime momentoCriacao;
 
     @Deprecated
     public Autor() {
