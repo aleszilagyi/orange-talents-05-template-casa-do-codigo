@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
 @RestController
@@ -41,9 +42,9 @@ public class LivroController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LivroDetalhesDto> detalhar(@PathVariable Long id) {
+    public ResponseEntity<LivroDetalhesDto> detalhar(@PathVariable("id") @Valid @NotNull Long id) {
         Optional<Livro> livro = livroRepository.findById(id);
-        if(livro.isPresent()){
+        if (livro.isPresent()) {
             return ResponseEntity.ok(new LivroDetalhesDto(livro.get()));
         }
         return ResponseEntity.notFound().build();

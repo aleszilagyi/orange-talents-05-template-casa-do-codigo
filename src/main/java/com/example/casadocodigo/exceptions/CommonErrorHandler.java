@@ -15,7 +15,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @RestControllerAdvice
-public class ValidationErrorHandler {
+public class CommonErrorHandler {
 
     @Autowired
     private MessageSource messageSource;
