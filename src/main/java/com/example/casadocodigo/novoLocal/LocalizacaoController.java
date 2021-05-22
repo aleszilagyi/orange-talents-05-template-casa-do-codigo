@@ -1,18 +1,15 @@
 package com.example.casadocodigo.novoLocal;
 
-import com.example.casadocodigo.exceptions.FieldErrorOutputDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/paises")
-@Validated
 public class LocalizacaoController {
 
     @Autowired
@@ -20,7 +17,7 @@ public class LocalizacaoController {
     @Autowired
     private PaisRepository paisRepository;
 
-    @PostMapping
+    @PostMapping("/paises")
     @Transactional
     public ResponseEntity<PaisDto> cadastrar(@RequestBody @Valid FormPaisRequest request) {
         Pais pais = request.converter();
@@ -29,21 +26,13 @@ public class LocalizacaoController {
         return ResponseEntity.ok(new PaisDto(pais));
     }
 
-    @PostMapping("/{pais}")
+    @PostMapping("/estados")
     @Transactional
-    public ResponseEntity<?> cadastrarEstado(@PathVariable("pais") String pais, @RequestBody @Valid FormEstadoRequest request) {
-        Optional<Pais> talvezPaisExista = paisRepository.findByNomeIgnoreCase(pais);
-        if (talvezPaisExista.isPresent()) {
-            Optional<Estado> talvezExisteEstadoComMesmoNomeNoPais = estadoRepository.findByNomeAndPaisId(request.getNome(), talvezPaisExista.get().getId());
-            if (talvezExisteEstadoComMesmoNomeNoPais.isEmpty()) {
-                Estado estado = request.converter(talvezPaisExista.get());
-                estadoRepository.save(estado);
+    public ResponseEntity<EstadoDto> cadastrarEstado(@RequestBody @Valid FormEstadoRequest request) {
 
-                return ResponseEntity.ok(new EstadoDto(estado));
-            }
-            return ResponseEntity.badRequest().body(new FieldErrorOutputDto("nome",
-                    talvezExisteEstadoComMesmoNomeNoPais.get().getNome() + " já cadastrado para o país: " + pais));
-        }
-        return ResponseEntity.badRequest().body(new FieldErrorOutputDto("pais", pais + " não está cadasrado"));
+        Estado estado = request.converter(paisRepository);
+        estadoRepository.save(estado);
+
+        return ResponseEntity.ok(new EstadoDto(estado));
     }
 }

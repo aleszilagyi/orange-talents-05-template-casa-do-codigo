@@ -5,7 +5,7 @@ import javax.validation.Payload;
 import java.lang.annotation.*;
 
 @Constraint(validatedBy = {ValueExistsValidator.class})
-@Target({ElementType.FIELD, ElementType.TYPE_USE})
+@Target(value = {ElementType.FIELD, ElementType.TYPE_USE, ElementType.TYPE_PARAMETER, ElementType.PARAMETER, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface ValueExists {
